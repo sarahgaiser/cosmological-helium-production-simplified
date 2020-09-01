@@ -104,8 +104,9 @@ class VariationsOfNeutronBaryonRatio(NeutronBaryonRatio):
         """
         self.set_t_c(self.X_no_n_decay())
         C = self.C_var_with_b_coeff()
-        prefactor = ((1/(2*self.N_eff) * self.t_c/self.phys_const.tau_n
-                      + C/(2*self.N))
+        N = self.N + 7/4 * delta_N_nu
+        N_eff = self.N_eff + 7/4 * delta_N_nu
+        prefactor = ((1/(2*N_eff) * self.t_c/self.phys_const.tau_n + C/(2*N))
                      * 7/4 * self.He_mass_fraction())
 
         return prefactor * delta_N_nu
@@ -123,7 +124,7 @@ class VariationsOfNeutronBaryonRatio(NeutronBaryonRatio):
             variation of He mass fraction with neutron mean life
         """
         self.set_t_c(self.X_no_n_decay())
-        tau = self.phys_const.tau_n
+        tau = self.phys_const.tau_n + delta_tau_n
         C = self.C_var_with_b_coeff()
         return self.He_mass_fraction()/tau * (C + self.t_c/tau) * delta_tau_n
 
