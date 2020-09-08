@@ -15,31 +15,39 @@ matplotlib.rcParams['text.usetex'] = True
 
 
 def plot_neutron_baryon_ratio_variation():
-    # plot neutron-to-baryon ratio with varying nx*mx/ngamma
+    """Plot neutron-to-baryon ratio with varying n_x*m_x/n_gamma.
+
+    This function uses a set of already calculated data which is written
+    to CompareNeutronFractionUsingnx.txt to plot the neutron-to-baryon
+    ratio with varying n_x*m_x/n_gamma.
+    """
+
     compare_neutron_data = np.loadtxt('CompareNeutronFractionUsingnx.txt')
 
     fig, ax = plt.subplots()
     ax.hlines(y=0.15, xmin=-1, xmax=11, color='grey', linestyle='--')
     ax.plot(compare_neutron_data[:, 0], compare_neutron_data[:, 1],
-            color='green', label=r'$\frac{n_x m_x}{n_\gamma}$ = 0')
+            color='green', label=r'$\frac{m_x n_{x,0}}{n_\gamma}$ = 0 MeV')
     ax.plot(compare_neutron_data[:, 0], compare_neutron_data[:, 2],
             linestyle='--', color='#8FBC8F',
-            label=r'$\frac{n_x m_x}{n_\gamma}$ = 0.01')
+            label=r'$\frac{m_x n_{x,0}}{n_\gamma}$ = 0.01 MeV')
     ax.plot(compare_neutron_data[:, 0], compare_neutron_data[:, 3],
             linestyle='-.', color='#8FBC8F',
-            label=r'$\frac{n_x m_x}{n_\gamma}$ = 0.1')
+            label=r'$\frac{m_x n_{x,0}}{n_\gamma}$ = 0.1 MeV')
     ax.plot(compare_neutron_data[:, 0], compare_neutron_data[:, 4],
             linestyle='-', color='#8FBC8F',
-            label=r'$\frac{n_x m_x}{n_\gamma}$ = 1')
+            label=r'$\frac{m_x n_x}{n_\gamma}$ = 1 MeV')
 
+    # create legend for plot
     legend = ax.legend(loc='upper right', ncol=2)
-
+    # set labels, limits on axes and title of plot
     ax.set_ylabel('X(y)')
     ax.set_xlabel('y')
     ax.set_xlim(-0.1, 10.1)
     ax.set_title(r'Neutron-to-total-baryon ratio X(y) for several values of '
                  r'$\frac{n_x m_x}{n_\gamma}$')
 
+    # create plot of zoomed in version which is included in main plot
     axins = inset_axes(ax, width='50%', height='40%', loc=5, borderpad=1)
     axins.plot(compare_neutron_data[:, 0], compare_neutron_data[:, 1],
                color='green')
@@ -49,7 +57,7 @@ def plot_neutron_baryon_ratio_variation():
                linestyle='-.', color='#8FBC8F')
     axins.plot(compare_neutron_data[:, 0], compare_neutron_data[:, 4],
                linestyle='-', color='#8FBC8F')
-
+    # set axes limits for zoomed version
     axins.set_xlim(6, 10)
     axins.set_ylim(0.15, 0.165)
 
@@ -57,8 +65,12 @@ def plot_neutron_baryon_ratio_variation():
 
 
 def plot_neutron_baryon_ratio_difference():
-    # plot difference of neutron-to-baryon ratio with nx*mx/ngamma > 0
-    # to value without additional massive particle
+    """Plot difference of neutron-to-baryon ratio with nx*mx/ngamma > 0
+       to value without additional massive particle.
+
+    This function uses a set of already calculated data which is written
+    to CompareNeutronFractionUsingnx.txt.
+    """
     compare_neutron_data = np.loadtxt('CompareNeutronFractionUsingnx.txt')
 
     fig, ax = plt.subplots()
@@ -75,7 +87,9 @@ def plot_neutron_baryon_ratio_difference():
             linestyle='-', color='#8FBC8F',
             label=r'$\mathrm{X}(y, \frac{n_x m_x}{n_\gamma} = 1)$')
 
+    # create legend for plot
     legend = ax.legend(loc='upper left')
+    # set labels, limits on axes and title of plot
     ax.set_ylabel(r'$\mathrm{X}(y, \frac{n_x m_x}{n_\gamma})'
                   r' - \mathrm{X}(y, 0)$')
     ax.set_xlabel('y')
@@ -87,6 +101,7 @@ def plot_neutron_baryon_ratio_difference():
 
 
 def plot_total_reaction_rate():
+    """Plot total reaction rate as function of y."""
     tau_n = helper.PhysicalConstants().tau_n
 
     y_values = np.arange(0.01, 10, 0.01)
@@ -119,6 +134,7 @@ def plot_total_reaction_rate():
 
 
 def plot_I():
+    """Plot integrating factor I(y, y') as function of y and y'."""
     y_values = np.arange(0.001, 10, 0.001)
 
     results_y_1 = []
@@ -152,6 +168,7 @@ def plot_I():
     ax.set_xlabel(r'$y^\prime$')
     ax.set_ylabel(r'$I(y, y^\prime)$')
 
+    # created zoomed in plot
     axins = inset_axes(ax, width='50%', height='40%', loc=5, borderpad=1)
     axins.plot(y_values, results_y_1, linestyle='-', color='#8FBC8F')
     axins.plot(y_values, results_y_2, linestyle='--', color='#8FBC8F')
@@ -165,6 +182,7 @@ def plot_I():
 
 
 def plot_neutron_baryon_ratio():
+    """Plot neutron-to-baryon ratio as function of y."""
     y_values = np.arange(0.01, 10, 0.01)
     results_X_eq, results_correction, results_X = [], [], []
 
@@ -193,6 +211,7 @@ def plot_neutron_baryon_ratio():
 
 
 def plot_variation_with_eta():
+    """Plot variation of helium abundance with eta."""
     He_fraction_variation = variations.VariationsOfNeutronBaryonRatio()
     eta_values = np.arange(1, 10, 0.1)*1e-10
 
@@ -219,6 +238,7 @@ def plot_variation_with_eta():
 
 
 def plot_variation_with_tau():
+    """Plot variation of helium abundance with tau (neutron mean life)."""
     He_fraction_variation = variations.VariationsOfNeutronBaryonRatio()
     delta_tau_values = np.arange(-30, 30, 0.1)
 
@@ -246,6 +266,7 @@ def plot_variation_with_tau():
 
 
 def plot_variation_with_N_neutrinos():
+    """Plot variation of helium abundance with nuber of neutrinos."""
     He_fraction_variation = variations.VariationsOfNeutronBaryonRatio()
     delta_N_nu_values = np.arange(-3, 3, 0.1)
 
@@ -273,6 +294,8 @@ def plot_variation_with_N_neutrinos():
 
 
 def plot_variation_with_alpha():
+    """Plot variation of helium abundance with alpha
+       (scaled chemical potential electron neutrino)."""
     He_fraction_variation = variations.VariationsOfNeutronBaryonRatio()
     alpha_values = np.arange(0, 0.1, 0.001)
 
@@ -298,25 +321,51 @@ def plot_variation_with_alpha():
     plt.show()
 
 
-plot_variation_with_alpha()
-# tc_data = np.loadtxt('CaptureTimeUsingnx.txt')
-# plt.plot(tc_data[:, 0], tc_data[:, 1])
-# plt.show()
+def plot_capture_time_with_nx_fraction():
+    """Plot capture time of neutrons as function of (n_x m_x)/n_gamma.
 
-# He_data = np.loadtxt('HeMassFractionUsingnx.txt')
-# plt.plot(He_data[:, 0], He_data[:, 1])
-# plt.xlim(0, 10)
-# plt.show()
-# print(fsolve(difference, 2.1))
+    This function uses a set of already calculated data which is written
+    to CaptureTimeUsingnx.txt to plot the capture time of neutrons as
+    function of (n_x m_x)/n_gamma.
+    """
+    tc_data = np.loadtxt('CaptureTimeUsingnx.txt')
+    plt.title(r'Change of capture time $t_c$ with '
+              r'$\frac{m_X n_{X,0}}{n_{\gamma, 0}}$')
+    plt.xlabel(r'$\frac{m_X n_{X,0}}{n_{\gamma, 0}}$/MeV')
+    plt.ylabel(r'$t_c$/s')
+    plt.plot(tc_data[:, 0], tc_data[:, 1], color='green')
+    plt.xlim(0, 1)
+    plt.ylim(100, 190)
+    plt.show()
 
-# print(X_simps(int_max, 0.251))
-# print(X_quad(10, 0.251))
 
-# X_quad_results = np.zeros(y_steps.size)
-# for i, y in enumerate(y_steps):
-#    X_quad_results[i] = X_quad(y, 0.251)[0]
+def plot_He_mass_fraction_with_nx_fraction():
+    """Plot mass fraction of helium as function of (n_x m_x)/n_gamma.
 
-# plt.figure()
-# plt.plot(y_steps, X_quad_results, 'k', y_steps, X_eq(y_steps), 'r--',
-#          y_steps, X_quad_results-X_eq(y_steps), 'b--')
-# plt.show()
+    This function uses a set of already calculated data which is written
+    to HeMassFractionUsingnx_correct.txt to plot the helium abundance
+    as function of (n_x m_x)/n_gamma.
+    """
+    He_data = np.loadtxt('HeMassFractionUsingnx_correct.txt')
+    plt.title(r'Change of helium mass fraction $Y_4$ with '
+              r'$\frac{m_X n_{X,0}}{n_{\gamma, 0}}$')
+    plt.xlabel(r'$\frac{m_X n_{X,0}}{n_{\gamma, 0}}$/MeV')
+    plt.ylabel(r'$Y_4$')
+    plt.hlines(y=0.239, xmin=-1, xmax=101, color='grey',
+               linestyle='--')
+    plt.plot(He_data[:, 0], He_data[:, 1], color='green')
+    plt.xlim(0, 1)
+    plt.ylim(0.22, 0.28)
+    plt.show()
+
+
+# plot_neutron_baryon_ratio_variation()
+# plot_total_reaction_rate()
+# plot_I()
+# plot_neutron_baryon_ratio()
+# plot_variation_with_alpha()
+# plot_variation_with_N_neutrinos()
+# plot_variation_with_tau()
+# plot_variation_with_eta()
+# plot_capture_time_with_nx_fraction()
+# plot_He_mass_fraction_with_nx_fraction()
